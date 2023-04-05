@@ -32,5 +32,7 @@ app.get('/stream', (req, res) => {
 });
 
 http.listen(5599, () => {
-    console.log('Screen stream on http://127.0.0.1:5599/stream');
+    console.log(`Screen streaming started. View scream using media player like VLC.
+- http://127.0.0.1:5599/stream
+- http://<your-host>:5599/stream`);
 });
