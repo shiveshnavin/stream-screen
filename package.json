@@ -1,8 +1,11 @@
 {
-  "name": "screen-stream",
+  "name": "stream-screen",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple http server to stream screen",
   "main": "index.js",
+  "bin": {
+    "stream-screen": "./index.js"
+  },
   "scripts": {
     "start": "node index.js",
     "start:headless": "export DISPLAY=:10.0 && node index.js"
