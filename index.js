@@ -11,14 +11,22 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 
 async function getSupportedFormat() {
-  const xcbgrabSupported = await checkInputFormat('xcbgrab');
+ 
+  try{
+     const xcbgrabSupported = await checkInputFormat('xcbgrab');
   if (xcbgrabSupported) {
     return 'xcbgrab';
   }
+  }catch(e){
+  }
 
+   try{
+    
   const x11grabSupported = await checkInputFormat('x11grab');
   if (x11grabSupported) {
     return 'x11grab';
+  }
+  }catch(e){
   }
 
   return null;
@@ -33,7 +41,7 @@ function checkInputFormat(format) {
         if (err.message.includes('input format not recognized')) {
           resolve(false);
         } else {
-          reject(err);
+          resolve(false);
         }
       })
       .on('end', () => {
