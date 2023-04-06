@@ -73,23 +73,17 @@ getSupportedFormat().then(format => {
 function checkInputFormat(format) {
   console.log('Checking if', format, 'is supported')
   return new Promise((resolve, reject) => {
-    const command = ffmpeg();
-    command.input(':10.0')
-      .inputFormat(format)
-      .on('error', (err) => {
-        if (err.message.includes(`'${format}' is not supported`)) {
-          console.log(format, 'is not supported')
-          resolve(false);
+    ffmpeg.getAvailableFormats((err, formats) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (formats.includes(format)) {
+          resolve(true);
         } else {
-          console.log(format, 'error checking.', err.message)
           resolve(false);
         }
-      })
-      .on('end', () => {
-        resolve(true);
-        console.log(format, 'is supported')
-      })
-      .run();
+      }
+    });
   });
 }
 
