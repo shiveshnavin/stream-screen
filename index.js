@@ -79,13 +79,15 @@ function checkInputFormat(format) {
       .on('error', (err) => {
         console.log(err)
         if (err.message.includes(`'${format}' is not supported`)) {
+          console.log(format, 'is not supported')
           resolve(false);
         } else {
-          reject(err);
+          resolve(false);
         }
       })
       .on('end', () => {
         resolve(true);
+        console.log(format, 'is supported')
       })
       .output('/dev/null')
       .run();
