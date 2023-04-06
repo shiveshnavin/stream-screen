@@ -64,7 +64,9 @@ async function getSupportedFormat() {
 
   return null;
 }
-
+getSupportedFormat().then(format => {
+  console.log('Supported input format', format)
+})
 function checkInputFormat(format) {
   return new Promise((resolve, reject) => {
     const command = ffmpeg();
