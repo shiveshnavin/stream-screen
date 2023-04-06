@@ -43,10 +43,10 @@ async function getFFMPEGPath() {
     ffmpegPath = ffmpegPathStatic
   return ffmpegPath
 }
-async function getSupportedFormat() {
+async function getSupportedFormat(ffmpegPath) {
 
   try {
-    const xcbgrabSupported = await checkInputFormat('xcbgrab');
+    const xcbgrabSupported = await checkInputFormat('xcbgrab', ffmpegPath);
     if (xcbgrabSupported) {
       return 'xcbgrab';
     }
@@ -55,7 +55,7 @@ async function getSupportedFormat() {
 
   try {
 
-    const x11grabSupported = await checkInputFormat('x11grab');
+    const x11grabSupported = await checkInputFormat('x11grab', ffmpegPath);
     if (x11grabSupported) {
       return 'x11grab';
     }
@@ -66,22 +66,33 @@ async function getSupportedFormat() {
 }
 getFFMPEGPath().then(ffp => {
   console.log('Using ffmpeg from', ffp)
+
+  getSupportedFormat(ffp).then(format => {
+    console.log('Supported input format', format)
+  })
 })
-getSupportedFormat().then(format => {
-  console.log('Supported input format', format)
-})
-function checkInputFormat(format) {
+
+
+function checkInputFormat(format, ffmpegPath) {
   console.log('Checking if', format, 'is supported')
   return new Promise((resolve, reject) => {
-    ffmpeg.getAvailableFormats((err, formats) => {
-      if (err) {
-        reject(err);
-      } else {
-        if (formats.includes(format)) {
+    const cmd = spawn(ffmpegPath, ['-formats']);
+    let output = '';
+    cmd.stdout.on('data', (data) => {
+      output += data.toString();
+    });
+    cmd.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
+    cmd.on('close', (code) => {
+      if (code === 0) {
+        if (output.includes(format)) {
           resolve(true);
         } else {
           resolve(false);
         }
+      } else {
+        reject(new Error(`ffmpeg -formats exited with code ${code}`));
       }
     });
   });
@@ -92,7 +103,7 @@ app.get('/stream', async (req, res) => {
   ffmpeg.setFfmpegPath(ffPath)
   const command = ffmpeg()
     .input(':10.0')
-    .inputFormat('xcbgrab')
+    .inputFormat(await getSupportedFormat(ffPath))
     .videoCodec('libx264')
     .inputFPS(25)
     .size('1024x768')
