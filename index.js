@@ -64,6 +64,9 @@ async function getSupportedFormat() {
 
   return null;
 }
+getFFMPEGPath().then(ffp => {
+  console.log('Using ffmpeg from', ffp)
+})
 getSupportedFormat().then(format => {
   console.log('Supported input format', format)
 })
