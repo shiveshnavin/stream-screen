@@ -77,11 +77,11 @@ function checkInputFormat(format) {
     command.input(':10.0')
       .inputFormat(format)
       .on('error', (err) => {
-        console.log(err)
         if (err.message.includes(`'${format}' is not supported`)) {
           console.log(format, 'is not supported')
           resolve(false);
         } else {
+          console.log(format, 'error checking.', err.message)
           resolve(false);
         }
       })
