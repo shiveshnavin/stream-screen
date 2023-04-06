@@ -89,7 +89,6 @@ function checkInputFormat(format) {
         resolve(true);
         console.log(format, 'is supported')
       })
-      .output('/dev/null')
       .run();
   });
 }
