@@ -5,7 +5,7 @@ const app = express();
 const http = require('http').createServer(app);
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegPathStatic = require('ffmpeg-static');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const path = require('path');
 
 
@@ -51,6 +51,7 @@ async function getSupportedFormat(ffmpegPath) {
       return 'xcbgrab';
     }
   } catch (e) {
+    console.log(e)
   }
 
   try {
@@ -60,6 +61,7 @@ async function getSupportedFormat(ffmpegPath) {
       return 'x11grab';
     }
   } catch (e) {
+    console.log(e)
   }
 
   return null;
