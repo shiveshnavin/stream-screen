@@ -71,6 +71,17 @@ getFFMPEGPath().then(ffp => {
 
   getSupportedFormat(ffp).then(format => {
     console.log('Supported input format', format)
+    if (format == null) {
+      console.error('No supported ffmpeg format')
+      return
+    }
+
+    http.listen(5599, () => {
+      console.log(`Screen streaming started. View scream using media player like VLC.
+- http://127.0.0.1:5599/stream
+- http://<your-host>:5599/stream`);
+    });
+
   })
 })
 
@@ -124,10 +135,4 @@ app.get('/stream', async (req, res) => {
   });
 
   command.pipe(res, { end: true });
-});
-
-http.listen(5599, () => {
-  console.log(`Screen streaming started. View scream using media player like VLC.
-- http://127.0.0.1:5599/stream
-- http://<your-host>:5599/stream`);
 });
