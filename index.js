@@ -51,7 +51,7 @@ async function getSupportedFormat(ffmpegPath) {
       return 'xcbgrab';
     }
   } catch (e) {
-    console.log(e)
+    // console.log(e)
   }
 
   try {
@@ -61,7 +61,7 @@ async function getSupportedFormat(ffmpegPath) {
       return 'x11grab';
     }
   } catch (e) {
-    console.log(e)
+    // console.log(e)
   }
 
   return null;
