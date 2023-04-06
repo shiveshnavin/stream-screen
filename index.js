@@ -71,6 +71,7 @@ getSupportedFormat().then(format => {
   console.log('Supported input format', format)
 })
 function checkInputFormat(format) {
+  console.log('Checking if', format, 'is supported')
   return new Promise((resolve, reject) => {
     const command = ffmpeg();
     command.input(':10.0')
