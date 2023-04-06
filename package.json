@@ -1,6 +1,6 @@
 {
   "name": "stream-screen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple http server to stream screen",
   "main": "index.js",
   "bin": {
